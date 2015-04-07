@@ -1,4 +1,4 @@
-var $ = require('./index')
+var $ = require('../index')
 
 var equals = function(expected, actual) {
   if (expected !== actual) throw new Error(expected + ' != ' + actual)

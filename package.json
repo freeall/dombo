@@ -9,7 +9,7 @@
     "wzrd": "^1.2.1"
   },
   "scripts": {
-    "test": "wzrd test.js"
+    "test": "wzrd --path test test/test.js"
   },
   "author": "Tobias Baunbæk <freeall@gmail.com>",
   "license": "MIT",
