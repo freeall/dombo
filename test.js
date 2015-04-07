@@ -20,7 +20,7 @@ var testThreeElements = function() {
   setup('testThreeElements')
   setup('testThreeElements')
 
-  var set = $('.threeelements')
+  var set = $('.testThreeElements')
   equals(3, set.length)
 
   teardown('testThreeElements')
@@ -28,9 +28,9 @@ var testThreeElements = function() {
 var testSingleElement = function() {
   setup('testSingleElement')
 
-  var elm = $('.oneelement')
+  var elm = $('.testSingleElement')
   equals(1, elm.length)
-  equals('oneelement', elm.className)
+  equals('testSingleElement', elm.className)
 
   teardown('testSingleElement')
 }
@@ -125,7 +125,7 @@ var testAddClass = function() {
 var testRemoveClass = function() {
   equals(2, $('.bar').length)
   $('.bar').removeClass('bar')
-  equals(undefined, $('.bar'))
+  equals(null, $('.bar'))
 }
 var testRemoveListenerBeforeCall = function() {
   setup('testRemoveListenerBeforeCall')
@@ -155,6 +155,18 @@ var testRemoveOnceListenerBeforeCall = function() {
 
   teardown('testRemoveOnceListenerBeforeCall')
 }
+var testDocument = function() {
+  equals(document, $(document))
+}
+var testNodes = function() {
+  setup('testNodes')
+
+  var set = $('.testNodes')
+  equals(set, $(set))
+
+  teardown('testNodes')
+}
+
 testThreeElements()
 testSingleElement()
 testSingleOn()
@@ -168,3 +180,5 @@ testAddClass()
 testRemoveClass()
 testRemoveListenerBeforeCall()
 testRemoveOnceListenerBeforeCall()
+testDocument()
+testNodes()

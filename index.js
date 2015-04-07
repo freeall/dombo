@@ -1,9 +1,11 @@
 var once = require('once')
 
 module.exports = function(selector) {
+  if (selector.nodeName) return selector
+
   var nodes = document.querySelectorAll(selector)
 
-  if (nodes.length === 0) return undefined
+  if (nodes.length === 0) return null
 
   nodes.each = function(fn) {
     for (var i=0; i<nodes.length; i++) {
