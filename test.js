@@ -16,13 +16,23 @@ var teardown = function(name) {
 }
 
 var testThreeElements = function() {
+  setup('testThreeElements')
+  setup('testThreeElements')
+  setup('testThreeElements')
+
   var set = $('.threeelements')
   equals(3, set.length)
+
+  teardown('testThreeElements')
 }
 var testSingleElement = function() {
+  setup('testSingleElement')
+
   var elm = $('.oneelement')
   equals(1, elm.length)
   equals('oneelement', elm.className)
+
+  teardown('testSingleElement')
 }
 var testSingleOn = function() {
   setup('testSingleOn')
@@ -117,7 +127,34 @@ var testRemoveClass = function() {
   $('.bar').removeClass('bar')
   equals(undefined, $('.bar'))
 }
+var testRemoveListenerBeforeCall = function() {
+  setup('testRemoveListenerBeforeCall')
 
+  var clicks = 0
+  var onclick = function() {
+    clicks++
+  }
+  $('.testRemoveListenerBeforeCall').on('click', onclick)
+  $('.testRemoveListenerBeforeCall').off('click', onclick)
+  $('.testRemoveListenerBeforeCall').click()
+  equals(0, clicks)
+
+  teardown('testRemoveListenerBeforeCall')
+}
+var testRemoveOnceListenerBeforeCall = function() {
+  setup('testRemoveOnceListenerBeforeCall')
+
+  var clicks = 0
+  var onclick = function() {
+    clicks++
+  }
+  $('.testRemoveOnceListenerBeforeCall').once('click', onclick)
+  $('.testRemoveOnceListenerBeforeCall').off('click', onclick)
+  $('.testRemoveOnceListenerBeforeCall').click()
+  equals(0, clicks)
+
+  teardown('testRemoveOnceListenerBeforeCall')
+}
 testThreeElements()
 testSingleElement()
 testSingleOn()
@@ -129,3 +166,5 @@ testOnceFilter()
 testHasClass()
 testAddClass()
 testRemoveClass()
+testRemoveListenerBeforeCall()
+testRemoveOnceListenerBeforeCall()
