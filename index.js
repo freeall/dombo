@@ -29,7 +29,7 @@ module.exports = function(selector) {
 
     nodes.each(function(node) {
       var fInternal = function(mouseEvent) {
-        if (!filter) return fWrapped.apply(this, mouseEvent)
+        if (!filter) return fWrapped.apply(this, [mouseEvent])
 
         var filterList = this.querySelectorAll(filter)
         var filtered = false
@@ -40,7 +40,7 @@ module.exports = function(selector) {
           }
         }
         if (!filtered) return
-        fWrapped.apply(this, mouseEvent)
+        fWrapped.apply(this, [mouseEvent])
       }
 
       node._domboListeners = node._domboListeners || {}
