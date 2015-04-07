@@ -16,6 +16,10 @@ var $ = require('dombo')
 $('.item').each(function(elm) {
   console.log(elm)
 })
+$('.item').on('click', '.delete', function() {
+	console.log('Removes item')
+	this.remove()
+})
 ```
 
 ## Methods
@@ -24,15 +28,15 @@ $('.item').each(function(elm) {
 
 Iterates over all matched elements
 
-### $(selector).on(event, fn)
+### $(selector).on(event, [filter,] fn)
 
-Adds event handler to all matched elements
+Adds event handler to all matched elements. If filter is given, then the event handler is only run if filter matches child elements.
 
 ### $(selector).off(event, fn)
 
 Removes event handler from all matched elements
 
-### $(selector).once(event, fn)
+### $(selector).once(event, [filter,] fn)
 
 Adds event handler to all matched elements, but guarantees it's only called once
 

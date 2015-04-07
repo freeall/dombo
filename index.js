@@ -10,23 +10,70 @@ module.exports = function(selector) {
       fn(nodes[i], i)
     }
   }
-  nodes.on = function(event, fn) {
+  /*
+    To handle event listeners, dombo attached its own even listener to the node.
+    To do this properly dombo adds some data on the node.
+
+    Node: {
+      _domboListeners: {
+        eventName: {
+          original: function()... // the function given by the user
+          internal: function()... // the function used internally by dombo
+        }
+      },
+      ...
+    }
+  */
+  var on = function(event, filter, fOriginal, one) {
+    var fWrapped = one ? once(fOriginal) : fOriginal
+
     nodes.each(function(node) {
-      node.addEventListener(event, fn, false)
+      var fInternal = function(mouseEvent) {
+        if (!filter) return fWrapped.apply(this, mouseEvent)
+
+        var filterList = this.querySelectorAll(filter)
+        var filtered = false
+        for (var i=0; i<filterList.length; i++) {
+          if (filterList[i] === mouseEvent.srcElement) {
+            filtered = true
+            break
+          }
+        }
+        if (!filtered) return
+        fWrapped.apply(this, mouseEvent)
+      }
+
+      node._domboListeners = node._domboListeners || {}
+      node._domboListeners[event] = node._domboListeners[event] || []
+      node._domboListeners[event].push({
+        original: fOriginal,
+        internal: fInternal
+      })
+      node.addEventListener(event, fInternal, false)
     })
   }
-  nodes.once = function(event, fn) {
-    nodes.each(function(node) {
-      node.addEventListener(event, once(fn), false)
-    })
+  nodes.on = function(event, filter, fn) {
+    if (!fn) return nodes.on(event, null, filter)
+    on(event, filter, fn)
+  }
+  nodes.once = function(event, filter, fn) {
+    if (!fn) return nodes.once(event, null, filter)
+    on(event, filter, fn, 1)
   }
   nodes.off = function(event, fn) {
     nodes.each(function(node) {
-      node.removeEventListener(event, fn)
+      if (!node._domboListeners) return
+      if (!node._domboListeners[event]) return
+
+      node._domboListeners[event] = node._domboListeners[event].filter(function(listener) {
+        if (listener.original !== fn) return true
+        node.removeEventListener(event, listener.internal)
+        return false
+      })
     })
   }
   nodes.hasClass = function(name) {
-    var res = false;
+    var res = false
     nodes.each(function(node) {
       if (node.className.indexOf(name) > -1) res = true
     })

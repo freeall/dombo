@@ -54,6 +54,16 @@ var testMultipleOn = function() {
 
   teardown('testMultipleOn')
 }
+var testOnFilter = function() {
+  var clicks = 0
+  var onclick = function() {
+    clicks++
+  }
+  $('.outer').on('click', '.inner1', onclick)
+  $('.inner1').click()
+  $('.inner2').click()
+  equals(1, clicks)
+}
 var testOnce = function() {
   setup('testOnce')
 
@@ -83,6 +93,15 @@ var testOff = function() {
 
   teardown('testOff')
 }
+var testOnceFilter = function() {
+  var clicks = 0
+  $('.outerOnce').once('click', '.innerOnce2', function() {
+    clicks++
+  })
+  $('.innerOnce1').click()
+  $('.innerOnce2').click()
+  equals(1, clicks)
+}
 var testHasClass = function() {
   equals(true, $('.foo').hasClass('bar'))
   equals(true, $('.foo').hasClass('baz'))
@@ -103,8 +122,10 @@ testThreeElements()
 testSingleElement()
 testSingleOn()
 testMultipleOn()
+testOnFilter()
 testOnce()
 testOff()
+testOnceFilter()
 testHasClass()
 testAddClass()
 testRemoveClass()
