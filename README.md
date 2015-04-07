@@ -18,7 +18,7 @@ $('.item').each(function(elm) {
 })
 ```
 
-## methods
+## Methods
 
 ### $(selector).each(fn)
 
@@ -47,6 +47,12 @@ Adds class to all matched elements
 ### $(selector).removeClass(name)
 
 Removes class from all matched elements
+
+## Properties
+
+### length
+
+Will always be set, even when there is only one matched element
 
 ## License
 
