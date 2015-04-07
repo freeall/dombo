@@ -1,9 +1,7 @@
 var once = require('once')
 
 module.exports = function(selector) {
-  if (selector.nodeName) return selector
-
-  var nodes = document.querySelectorAll(selector)
+  var nodes = selector.nodeName ? [selector] : document.querySelectorAll(selector)
 
   if (nodes.length === 0) return null
 

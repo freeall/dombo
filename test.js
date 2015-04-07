@@ -166,6 +166,14 @@ var testNodes = function() {
 
   teardown('testNodes')
 }
+var testDocumentClick = function() {
+  var clicks = 0
+  $(document).on('click', function() {
+    clicks++
+  })
+  $('body').click()
+  equals(1, clicks)
+}
 
 testThreeElements()
 testSingleElement()
@@ -182,3 +190,4 @@ testRemoveListenerBeforeCall()
 testRemoveOnceListenerBeforeCall()
 testDocument()
 testNodes()
+testDocumentClick()
