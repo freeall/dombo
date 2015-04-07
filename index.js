@@ -9,6 +9,7 @@ module.exports = function(selector) {
     for (var i=0; i<nodes.length; i++) {
       fn(nodes[i], i)
     }
+    return this
   }
   /*
     To handle event listeners, dombo attached its own even listener to the node.
@@ -27,7 +28,7 @@ module.exports = function(selector) {
   var on = function(event, filter, fOriginal, one) {
     var fWrapped = one ? once(fOriginal) : fOriginal
 
-    nodes.each(function(node) {
+    return nodes.each(function(node) {
       var fInternal = function(mouseEvent) {
         if (!filter) return fWrapped.apply(this, [mouseEvent])
 
@@ -54,14 +55,14 @@ module.exports = function(selector) {
   }
   nodes.on = function(event, filter, fn) {
     if (!fn) return nodes.on(event, null, filter)
-    on(event, filter, fn)
+    return on(event, filter, fn)
   }
   nodes.once = function(event, filter, fn) {
     if (!fn) return nodes.once(event, null, filter)
-    on(event, filter, fn, 1)
+    return on(event, filter, fn, 1)
   }
   nodes.off = function(event, fn) {
-    nodes.each(function(node) {
+    return nodes.each(function(node) {
       if (!node._domboListeners) return
       if (!node._domboListeners[event]) return
 
@@ -80,20 +81,20 @@ module.exports = function(selector) {
     return res
   }
   nodes.addClass = function(name) {
-    nodes.each(function(node) {
+    return nodes.each(function(node) {
       if (node.className.indexOf(name) > -1) return
       node.className += ' ' + name
     })
   }
   nodes.removeClass = function(name) {
-    nodes.each(function(node) {
+    return nodes.each(function(node) {
       if (node.className.indexOf(name) === -1) return
       node.className = node.className.split(name).join(' ')
     })
   }
   nodes.toggleClass = function(name) {
-    if (nodes.hasClass(name)) nodes.removeClass(name)
-    else nodes.addClass(name)
+    if (nodes.hasClass(name)) return nodes.removeClass(name)
+    return nodes.addClass(name)
   }
 
   if (nodes.length > 1) return nodes
