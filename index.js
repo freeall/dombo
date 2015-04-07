@@ -1,7 +1,7 @@
 var once = require('once')
 
-module.exports = function(el) {
-  var nodes = document.querySelectorAll(el)
+module.exports = function(selector) {
+  var nodes = document.querySelectorAll(selector)
 
   if (nodes.length === 0) return undefined
 
