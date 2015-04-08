@@ -36,9 +36,9 @@ Adds event handler to all matched elements. If selector is given, then the event
 
 Removes event handler from all matched elements
 
-### $(selector).once(event, [filter,] fn)
+### $(selector).one(event, [selector,] fn)
 
-Adds event handler to all matched elements, but guarantees it's only called once
+Adds event handler to all matched elements, but guarantees it's not called after the first time the event fires.
 
 ### $(selector).hasClass(name)
 

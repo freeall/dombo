@@ -110,19 +110,19 @@ var testOnFilter2 = function() {
   $('.testOnFilterInner.tofi1').off('click', f1)
   $('.testOnFilterInner.tofi2').off('click', f2)
 }
-var testOnce = function() {
-  setup('testOnce')
+var testOne = function() {
+  setup('testOne')
 
   var clicks = 0
-  $('.testOnce').once('click', function() {
+  $('.testOne').one('click', function() {
     clicks++
   })
-  $('.testOnce').click()
-  $('.testOnce').click()
-  $('.testOnce').click()
+  $('.testOne').click()
+  $('.testOne').click()
+  $('.testOne').click()
   equals(1, clicks)
 
-  teardown('testOnce')
+  teardown('testOne')
 }
 var testOff = function() {
   setup('testOff')
@@ -139,24 +139,24 @@ var testOff = function() {
 
   teardown('testOff')
 }
-var testOnceFilter1 = function() {
+var testOneFilter1 = function() {
   var clicks = 0
   var f = function() {
     clicks++
   }
-  $('.outerOnce').once('click', '.innerOnce2', f)
-  $('.innerOnce1').click()
-  $('.innerOnce2').click()
+  $('.outerOne').one('click', '.innerOne2', f)
+  $('.innerOne1').click()
+  $('.innerOne2').click()
   equals(1, clicks)
 
-  $('.outerOnce').off('click', f)
+  $('.outerOne').off('click', f)
 }
-var testOnceFilter2 = function() {
+var testOneFilter2 = function() {
   var clicks = 0
   var f = function() {
     clicks++
   }
-  $('.testOnFilter').once('click', '.testOnFilterInner', f)
+  $('.testOnFilter').one('click', '.testOnFilterInner', f)
   $('.testOnFilterInner.tofi2').click()
   equals(2, clicks)
 
@@ -191,19 +191,19 @@ var testRemoveListenerBeforeCall = function() {
 
   teardown('testRemoveListenerBeforeCall')
 }
-var testRemoveOnceListenerBeforeCall = function() {
-  setup('testRemoveOnceListenerBeforeCall')
+var testRemoveOneListenerBeforeCall = function() {
+  setup('testRemoveOneListenerBeforeCall')
 
   var clicks = 0
   var onclick = function() {
     clicks++
   }
-  $('.testRemoveOnceListenerBeforeCall').once('click', onclick)
-  $('.testRemoveOnceListenerBeforeCall').off('click', onclick)
-  $('.testRemoveOnceListenerBeforeCall').click()
+  $('.testRemoveOneListenerBeforeCall').one('click', onclick)
+  $('.testRemoveOneListenerBeforeCall').off('click', onclick)
+  $('.testRemoveOneListenerBeforeCall').click()
   equals(0, clicks)
 
-  teardown('testRemoveOnceListenerBeforeCall')
+  teardown('testRemoveOneListenerBeforeCall')
 }
 var testDocument = function() {
   equals(document, $(document))
@@ -231,15 +231,15 @@ testSingleOn()
 testMultipleOn()
 testOnFilter1()
 testOnFilter2()
-testOnce()
+testOne()
 testOff()
-testOnceFilter1()
-testOnceFilter2()
+testOneFilter1()
+testOneFilter2()
 testHasClass()
 testAddClass()
 testRemoveClass()
 testRemoveListenerBeforeCall()
-testRemoveOnceListenerBeforeCall()
+testRemoveOneListenerBeforeCall()
 testDocument()
 testNodes()
 testDocumentClick()
