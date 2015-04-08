@@ -1,7 +1,7 @@
 {
   "name": "dombo",
   "version": "1.1.2",
-  "description": "A limited subset of jQuery. Has iteration (each), event handlers (on, off, once) and className manipulation (hasClass, addClass, removeClass)",
+  "description": "A limited subset of jQuery. Has iteration (each), event handlers (on, off, one) and className manipulation (hasClass, addClass, removeClass)",
   "dependencies": {},
   "devDependencies": {
     "browserify": "^9.0.7",

@@ -2,7 +2,7 @@
 
 A very limited subset of the jQuery methods.
 
-Includes event handlers (on, off, once) and className manipulation (hasClass, addClass, removeClass)
+Includes event handlers (on, off, one) and className manipulation (hasClass, addClass, removeClass)
 
 ```
 npm install dombo

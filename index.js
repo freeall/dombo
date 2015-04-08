@@ -71,8 +71,8 @@ module.exports = function(selector) {
     if (!fn) return nodes.on(event, null, filter)
     return on(event, filter, fn)
   }
-  nodes.once = function(event, filter, fn) {
-    if (!fn) return nodes.once(event, null, filter)
+  nodes.one = function(event, filter, fn) {
+    if (!fn) return nodes.one(event, null, filter)
     return on(event, filter, fn, 1)
   }
   nodes.off = function(event, fn) {
@@ -116,7 +116,7 @@ module.exports = function(selector) {
   var node = nodes[0]
   node.each = nodes.each
   node.on = nodes.on
-  node.once = nodes.once
+  node.one = nodes.one
   node.off = nodes.off
   node.hasClass = nodes.hasClass
   node.addClass = nodes.addClass
