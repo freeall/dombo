@@ -224,6 +224,9 @@ var testDocumentClick = function() {
   $('body').click()
   equals(1, clicks)
 }
+var testWindow = function() {
+  $(window) // will fail if it doesn't work
+}
 
 testThreeElements()
 testSingleElement()
@@ -243,3 +246,4 @@ testRemoveOneListenerBeforeCall()
 testDocument()
 testNodes()
 testDocumentClick()
+testWindow()

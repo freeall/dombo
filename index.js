@@ -1,5 +1,5 @@
 module.exports = function(selector) {
-  var nodes = selector.nodeName ? [selector] : document.querySelectorAll(selector)
+  var nodes = selector.nodeName || selector === window ? [selector] : document.querySelectorAll(selector)
 
   if (nodes.length === 0) return null
 
