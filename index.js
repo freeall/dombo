@@ -1,5 +1,3 @@
-var once = require('once')
-
 module.exports = function(selector) {
   var nodes = selector.nodeName ? [selector] : document.querySelectorAll(selector)
 
