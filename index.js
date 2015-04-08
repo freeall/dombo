@@ -25,23 +25,39 @@ module.exports = function(selector) {
       ...
     }
   */
-  var on = function(event, filter, fOriginal, one) {
-    var fWrapped = one ? once(fOriginal) : fOriginal
+  var on = function(event, selector, fOriginal, one) {
+    var called = false
 
     return nodes.each(function(node) {
       var fInternal = function(mouseEvent) {
-        if (!filter) return fWrapped.apply(this, [mouseEvent])
+        if (one && called) return
 
-        var filterList = this.querySelectorAll(filter)
-        var filtered = false
-        for (var i=0; i<filterList.length; i++) {
-          if (filterList[i] === mouseEvent.srcElement) {
-            filtered = true
-            break
-          }
+        if (!selector) {
+          called = true
+          return fOriginal.apply(this, [mouseEvent])
         }
-        if (!filtered) return
-        fWrapped.apply(this, [mouseEvent])
+
+        /*
+          Traverses from mouseEvent.srcElement and up to this(where the event handler is attached).
+          On each node it checks to see if the node is part of the matched elements.
+        */
+        var handlerNode = this
+        var possibles = this.querySelectorAll(selector)
+        var isPossible = function(node) {
+          for (var i=0; i<possibles.length; i++) {
+            if (possibles[i] === node) return true
+          }
+          return false
+        }
+        var next = function(node) {
+          if (node === handlerNode) return;
+          if (isPossible(node)) {
+            called = true
+            fOriginal.apply(node, [mouseEvent])
+          }
+          next(node.parentNode)
+        }
+        next(mouseEvent.srcElement)
       }
 
       node._domboListeners = node._domboListeners || {}

@@ -28,9 +28,9 @@ $('.item').on('click', '.delete', function() {
 
 Iterates over all matched elements
 
-### $(selector).on(event, [filter,] fn)
+### $(selector).on(event, [selector,] fn)
 
-Adds event handler to all matched elements. If filter is given, then the event handler is only run if filter matches child elements.
+Adds event handler to all matched elements. If selector is given, then the event handler is only run if selector matches child elements.
 
 ### $(selector).off(event, fn)
 
