@@ -1,4 +1,4 @@
-var $ = require('../index')
+var $ = require('./index')
 
 var equals = function(expected, actual) {
   if (expected !== actual) throw new Error(expected + ' != ' + actual)
@@ -64,15 +64,51 @@ var testMultipleOn = function() {
 
   teardown('testMultipleOn')
 }
-var testOnFilter = function() {
-  var clicks = 0
-  var onclick = function() {
-    clicks++
+var testOnFilter1 = function() {
+  var state = 0
+  var fInner = function() {
+    if (this.className === 'testOnFilterInner tofi2') {
+      equals(2, state++)
+    }
+    if (this.className === 'testOnFilterInner tofi1') {
+      equals(3, state++)
+    }
   }
-  $('.outer').on('click', '.inner1', onclick)
-  $('.inner1').click()
-  $('.inner2').click()
-  equals(1, clicks)
+  var ftofi1 = function() {
+    equals(1, state++)
+  }
+  var ftofi2 = function() {
+    equals(0, state++)
+  }
+  $('.testOnFilter').on('click', '.testOnFilterInner', fInner)
+  $('.testOnFilterInner.tofi1').on('click', ftofi1)
+  $('.testOnFilterInner.tofi2').on('click', ftofi2)
+
+  $('.testOnFilterInner.tofi2').click()
+  $('.testOnFilter').off('click', fInner)
+  $('.testOnFilterInner.tofi1').off('click', ftofi1)
+  $('.testOnFilterInner.tofi2').off('click', ftofi2)
+}
+var testOnFilter2 = function() {
+  var state = 0
+  var fInner = function() {
+    equals(1, state++)
+  }
+  var f1 = function() {
+    equals(0, state++)
+  }
+  var f2 = function() {
+    throw new Error('Should not call this')
+  }
+
+  $('.testOnFilter').on('click', '.testOnFilterInner', fInner)
+  $('.testOnFilterInner.tofi1').on('click', f1)
+  $('.testOnFilterInner.tofi2').on('click', f2)
+  $('.testOnFilterInner.tofi1').click()
+
+  $('.testOnFilter').off('click', fInner)
+  $('.testOnFilterInner.tofi1').off('click', f1)
+  $('.testOnFilterInner.tofi2').off('click', f2)
 }
 var testOnce = function() {
   setup('testOnce')
@@ -103,14 +139,28 @@ var testOff = function() {
 
   teardown('testOff')
 }
-var testOnceFilter = function() {
+var testOnceFilter1 = function() {
   var clicks = 0
-  $('.outerOnce').once('click', '.innerOnce2', function() {
+  var f = function() {
     clicks++
-  })
+  }
+  $('.outerOnce').once('click', '.innerOnce2', f)
   $('.innerOnce1').click()
   $('.innerOnce2').click()
   equals(1, clicks)
+
+  $('.outerOnce').off('click', f)
+}
+var testOnceFilter2 = function() {
+  var clicks = 0
+  var f = function() {
+    clicks++
+  }
+  $('.testOnFilter').once('click', '.testOnFilterInner', f)
+  $('.testOnFilterInner.tofi2').click()
+  equals(2, clicks)
+
+  $('.testOnFilter').off('click', f)
 }
 var testHasClass = function() {
   equals(true, $('.foo').hasClass('bar'))
@@ -179,10 +229,12 @@ testThreeElements()
 testSingleElement()
 testSingleOn()
 testMultipleOn()
-testOnFilter()
+testOnFilter1()
+testOnFilter2()
 testOnce()
 testOff()
-testOnceFilter()
+testOnceFilter1()
+testOnceFilter2()
 testHasClass()
 testAddClass()
 testRemoveClass()

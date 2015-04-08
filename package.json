@@ -6,10 +6,11 @@
     "once": "^1.3.1"
   },
   "devDependencies": {
+    "browserify": "^9.0.7",
     "wzrd": "^1.2.1"
   },
   "scripts": {
-    "test": "wzrd --path test test/test.js"
+    "test": "wzrd test.js"
   },
   "author": "Tobias Baunbæk <freeall@gmail.com>",
   "license": "MIT",
