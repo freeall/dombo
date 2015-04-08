@@ -48,11 +48,12 @@ module.exports = function(selector) {
           return false
         }
         var next = function(node) {
-          if (node === handlerNode) return;
+          if (node === handlerNode) return
           if (isPossible(node)) {
             called = true
             fOriginal.apply(node, [mouseEvent])
           }
+          if (!node.parentNode) return
           next(node.parentNode)
         }
         next(mouseEvent.srcElement)
