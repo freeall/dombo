@@ -24,31 +24,31 @@ $('.item').on('click', '.delete', function() {
 
 ## Methods
 
-### $(selector).each(fn)
+### `$(selector).each(fn)`
 
 Iterates over all matched elements
 
-### $(selector).on(event, [selector,] fn)
+### `$(selector).on(event, [selector,] fn)`
 
 Adds event handler to all matched elements. If selector is given, then the event handler is only run if selector matches child elements.
 
-### $(selector).off(event, fn)
+### `$(selector).off(event, fn)`
 
 Removes event handler from all matched elements
 
-### $(selector).one(event, [selector,] fn)
+### `$(selector).one(event, [selector,] fn)`
 
 Adds event handler to all matched elements, but guarantees it's not called after the first time the event fires.
 
-### $(selector).hasClass(name)
+### `$(selector).hasClass(name)`
 
 Returns true if one node of the matched elements has the class
 
-### $(selector).addClass(name)
+### `$(selector).addClass(name)`
 
 Adds class to all matched elements
 
-### $(selector).removeClass(name)
+### `$(selector).removeClass(name)`
 
 Removes class from all matched elements
 
