@@ -8,6 +8,7 @@ var setup = function(name) {
   var div = document.createElement('div')
   div.className = name
   document.body.appendChild(div)
+  return div
 }
 var teardown = function(name) {
   $('.'+name).each(function(node) {
@@ -227,6 +228,20 @@ var testDocumentClick = function() {
 var testWindow = function() {
   $(window) // will fail if it doesn't work
 }
+var testContext = function() {
+  setup('testContext')
+  var outer = setup('testContextOuter')
+  var div = document.createElement('div')
+  div.className = 'testContext'
+  outer.appendChild(div)
+
+  equals(2, $('.testContext').length)
+  equals(2, $('.testContext', document.body).length)
+  equals(1, $('.testContext', outer).length)
+
+  teardown('testContext')
+  teardown('testContextOuter')
+}
 
 testThreeElements()
 testSingleElement()
@@ -247,3 +262,4 @@ testDocument()
 testNodes()
 testDocumentClick()
 testWindow()
+testContext()

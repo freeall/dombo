@@ -1,5 +1,6 @@
-module.exports = function(selector) {
-  var nodes = selector.nodeName || selector === window ? [selector] : document.querySelectorAll(selector)
+module.exports = function(selector, context) {
+  context = context || document
+  var nodes = selector.nodeName || selector === window ? [selector] : context.querySelectorAll(selector)
 
   if (nodes.length === 0) return null
 
