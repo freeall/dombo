@@ -209,14 +209,6 @@ var testRemoveOneListenerBeforeCall = function() {
 var testDocument = function() {
   equals(document, $(document)[0])
 }
-var testNodes = function() {
-  setup('testNodes')
-
-  var set = $('.testNodes')
-  equals(set, $(set)[0])
-
-  teardown('testNodes')
-}
 var testDocumentClick = function() {
   var clicks = 0
   $(document).on('click', function() {
@@ -242,6 +234,9 @@ var testContext = function() {
   teardown('testContext')
   teardown('testContextOuter')
 }
+var testElementAsSelector = function() {
+  $($('body')[0])
+}
 
 testThreeElements()
 testSingleElement()
@@ -259,7 +254,7 @@ testRemoveClass()
 testRemoveListenerBeforeCall()
 testRemoveOneListenerBeforeCall()
 testDocument()
-testNodes()
 testDocumentClick()
 testWindow()
 testContext()
+testElementAsSelector()
