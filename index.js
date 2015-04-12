@@ -123,6 +123,7 @@ module.exports = function(selector, context) {
   node.hasClass = nodes.hasClass
   node.addClass = nodes.addClass
   node.removeClass = nodes.removeClass
+  node.toggleClass = nodes.toggleClass
   node.length = 1
 
   return node
