@@ -2,7 +2,7 @@
 
 A very limited subset of the jQuery methods.
 
-Only includes event handlers (on, off, one, trigger) and className manipulation (hasClass, addClass, removeClass, toggleClass)
+Only includes event handlers (`on`, `off`, `one`, `trigger`) and className manipulation (`hasClass`, `addClass`, `removeClass`, `toggleClass`)
 
 The selector returns a normal array so you can use `forEach`, `map`, `filter`, etc.
 
