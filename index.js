@@ -1,7 +1,15 @@
 module.exports = function(selector, context) {
   context = context || document
 
-  var nodes = selector._dombo || selector === window || selector === document ? [selector] : context.querySelectorAll(selector)
+  var nodes
+
+  if (selector._dombo) {
+    nodes = selector
+  } else if (selector === window || selector === document || selector.nodeName) {
+    nodes = [selector]
+  } else {
+    nodes = context.querySelectorAll(selector)
+  }
 
   if (nodes.length === 0) return null
 
