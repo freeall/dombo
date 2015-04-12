@@ -1,15 +1,12 @@
 module.exports = function(selector, context) {
   context = context || document
-  var nodes = selector.nodeName || selector === window ? [selector] : context.querySelectorAll(selector)
+
+  var nodes = selector._dombo || selector === window || selector === document ? [selector] : context.querySelectorAll(selector)
 
   if (nodes.length === 0) return null
 
-  nodes.each = function(fn) {
-    for (var i=0; i<nodes.length; i++) {
-      fn(nodes[i], i)
-    }
-    return this
-  }
+  nodes = Array.prototype.slice.call(nodes);
+
   /*
     To handle event listeners, dombo attached its own even listener to the node.
     To do this properly dombo adds some data on the node.
@@ -27,7 +24,7 @@ module.exports = function(selector, context) {
   var on = function(event, selector, fOriginal, one) {
     var called = false
 
-    return nodes.each(function(node) {
+    return nodes.forEach(function(node) {
       var fInternal = function(mouseEvent) {
         if (one && called) return
 
@@ -78,7 +75,7 @@ module.exports = function(selector, context) {
     return on(event, filter, fn, 1)
   }
   nodes.off = function(event, fn) {
-    return nodes.each(function(node) {
+    return nodes.forEach(function(node) {
       if (!node._domboListeners) return
       if (!node._domboListeners[event]) return
 
@@ -89,21 +86,37 @@ module.exports = function(selector, context) {
       })
     })
   }
+  nodes.trigger = function(name, data) {
+    return nodes.forEach(function(node) {
+      // From http://stackoverflow.com/questions/2490825/how-to-trigger-event-in-javascript
+      if (document.createEvent) {
+        var evt = document.createEvent('HTMLEvents')
+        evt.initEvent(name, true, true)
+        evt.eventName = name
+        node.dispatchEvent(evt)
+      } else {
+        var evt = document.createEventObject()
+        evt.eventType = name
+        evt.eventName = name
+        node.fireEvent("on" + evt.eventType, evt)
+      }
+    })
+  }
   nodes.hasClass = function(name) {
     var res = false
-    nodes.each(function(node) {
+    nodes.forEach(function(node) {
       if (node.className.indexOf(name) > -1) res = true
     })
     return res
   }
   nodes.addClass = function(name) {
-    return nodes.each(function(node) {
+    return nodes.forEach(function(node) {
       if (node.className.indexOf(name) > -1) return
       node.className += ' ' + name
     })
   }
   nodes.removeClass = function(name) {
-    return nodes.each(function(node) {
+    return nodes.forEach(function(node) {
       if (node.className.indexOf(name) === -1) return
       node.className = node.className.split(name).join(' ')
     })
@@ -112,19 +125,7 @@ module.exports = function(selector, context) {
     if (nodes.hasClass(name)) return nodes.removeClass(name)
     return nodes.addClass(name)
   }
+  nodes._dombo = true
 
-  if (nodes.length > 1) return nodes
-
-  var node = nodes[0]
-  node.each = nodes.each
-  node.on = nodes.on
-  node.one = nodes.one
-  node.off = nodes.off
-  node.hasClass = nodes.hasClass
-  node.addClass = nodes.addClass
-  node.removeClass = nodes.removeClass
-  node.toggleClass = nodes.toggleClass
-  node.length = 1
-
-  return node
+  return nodes
 }

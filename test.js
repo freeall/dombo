@@ -11,7 +11,7 @@ var setup = function(name) {
   return div
 }
 var teardown = function(name) {
-  $('.'+name).each(function(node) {
+  $('.'+name).forEach(function(node) {
     node.remove()
   })
 }
@@ -31,7 +31,7 @@ var testSingleElement = function() {
 
   var elm = $('.testSingleElement')
   equals(1, elm.length)
-  equals('testSingleElement', elm.className)
+  equals('testSingleElement', elm[0].className)
 
   teardown('testSingleElement')
 }
@@ -42,7 +42,7 @@ var testSingleOn = function() {
   $('.testSingleOn').on('click', function() {
     clicked = true
   })
-  $('.testSingleOn').click()
+  $('.testSingleOn').trigger('click')
   equals(true, clicked)
 
   teardown('testSingleOn')
@@ -56,7 +56,7 @@ var testMultipleOn = function() {
   $('.testMultipleOn').on('click', function() {
     clicks++
   })
-  $('.testMultipleOn').each(function(node) {
+  $('.testMultipleOn').forEach(function(node) {
     if (prevNode) equals(true, node !== prevNode)
     prevNode = node
     node.click()
@@ -85,7 +85,7 @@ var testOnFilter1 = function() {
   $('.testOnFilterInner.tofi1').on('click', ftofi1)
   $('.testOnFilterInner.tofi2').on('click', ftofi2)
 
-  $('.testOnFilterInner.tofi2').click()
+  $('.testOnFilterInner.tofi2').trigger('click')
   $('.testOnFilter').off('click', fInner)
   $('.testOnFilterInner.tofi1').off('click', ftofi1)
   $('.testOnFilterInner.tofi2').off('click', ftofi2)
@@ -105,7 +105,7 @@ var testOnFilter2 = function() {
   $('.testOnFilter').on('click', '.testOnFilterInner', fInner)
   $('.testOnFilterInner.tofi1').on('click', f1)
   $('.testOnFilterInner.tofi2').on('click', f2)
-  $('.testOnFilterInner.tofi1').click()
+  $('.testOnFilterInner.tofi1').trigger('click')
 
   $('.testOnFilter').off('click', fInner)
   $('.testOnFilterInner.tofi1').off('click', f1)
@@ -118,9 +118,9 @@ var testOne = function() {
   $('.testOne').one('click', function() {
     clicks++
   })
-  $('.testOne').click()
-  $('.testOne').click()
-  $('.testOne').click()
+  $('.testOne').trigger('click')
+  $('.testOne').trigger('click')
+  $('.testOne').trigger('click')
   equals(1, clicks)
 
   teardown('testOne')
@@ -133,9 +133,9 @@ var testOff = function() {
     clicks++
   }
   $('.testOff').on('click', onclick)
-  $('.testOff').click()
+  $('.testOff').trigger('click')
   $('.testOff').off('click', onclick)
-  $('.testOff').click()
+  $('.testOff').trigger('click')
   equals(1, clicks)
 
   teardown('testOff')
@@ -146,8 +146,8 @@ var testOneFilter1 = function() {
     clicks++
   }
   $('.outerOne').one('click', '.innerOne2', f)
-  $('.innerOne1').click()
-  $('.innerOne2').click()
+  $('.innerOne1').trigger('click')
+  $('.innerOne2').trigger('click')
   equals(1, clicks)
 
   $('.outerOne').off('click', f)
@@ -158,7 +158,7 @@ var testOneFilter2 = function() {
     clicks++
   }
   $('.testOnFilter').one('click', '.testOnFilterInner', f)
-  $('.testOnFilterInner.tofi2').click()
+  $('.testOnFilterInner.tofi2').trigger('click')
   equals(2, clicks)
 
   $('.testOnFilter').off('click', f)
@@ -187,7 +187,7 @@ var testRemoveListenerBeforeCall = function() {
   }
   $('.testRemoveListenerBeforeCall').on('click', onclick)
   $('.testRemoveListenerBeforeCall').off('click', onclick)
-  $('.testRemoveListenerBeforeCall').click()
+  $('.testRemoveListenerBeforeCall').trigger('click')
   equals(0, clicks)
 
   teardown('testRemoveListenerBeforeCall')
@@ -201,19 +201,19 @@ var testRemoveOneListenerBeforeCall = function() {
   }
   $('.testRemoveOneListenerBeforeCall').one('click', onclick)
   $('.testRemoveOneListenerBeforeCall').off('click', onclick)
-  $('.testRemoveOneListenerBeforeCall').click()
+  $('.testRemoveOneListenerBeforeCall').trigger('click')
   equals(0, clicks)
 
   teardown('testRemoveOneListenerBeforeCall')
 }
 var testDocument = function() {
-  equals(document, $(document))
+  equals(document, $(document)[0])
 }
 var testNodes = function() {
   setup('testNodes')
 
   var set = $('.testNodes')
-  equals(set, $(set))
+  equals(set, $(set)[0])
 
   teardown('testNodes')
 }
@@ -222,7 +222,7 @@ var testDocumentClick = function() {
   $(document).on('click', function() {
     clicks++
   })
-  $('body').click()
+  $('body').trigger('click')
   equals(1, clicks)
 }
 var testWindow = function() {

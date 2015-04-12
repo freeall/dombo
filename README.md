@@ -2,7 +2,9 @@
 
 A very limited subset of the jQuery methods.
 
-Includes event handlers (on, off, one) and className manipulation (hasClass, addClass, removeClass)
+Only includes event handlers (on, off, one, trigger) and className manipulation (hasClass, addClass, removeClass, toggleClass)
+
+The selector returns a normal array so you can use `forEach`, `map`, `filter`, etc.
 
 ```
 npm install dombo
@@ -13,24 +15,27 @@ npm install dombo
 ``` js
 var $ = require('dombo')
 
-$('.item').each(function(elm) {
+$('.item').forEach(function(elm) {
   console.log(elm)
 })
 $('.item').on('click', '.delete', function() {
 	console.log('Removes item')
 	this.remove()
 })
+$('.delete').trigger('click')
 ```
 
 ## Methods
 
-### `$(selector[, context])
+### `$(selector[, context])`
 
-Returns the matched elements. If there is several matched elements it returns a `NodeList`. If there is only one matched element it returns only the single `Element`.
+Returns an array with the matched elements, with the following methods added to it.
 
 If a `context` is given, the selector is only checked in the descendant nodes of that context.
 
-If the selector is already a `NodeList`, `Element`, `document`, or `window` it is simply just returned. This makes sure you can do `$($('.foo'))` without getting an error.
+If the selector is already a previous returned value from dombo, then it is simply returned. This makes sure that `$('.foo') === $($('.foo'))`.
+
+If the selector is `document` or `window` it is also just returned, so you can do `$(document)` and `$(window)`.
 
 ### `$(selector[, context]).each(fn)`
 
@@ -60,15 +65,15 @@ Adds class to all matched elements
 
 Removes class from all matched elements
 
-## Properties
+### `$(selector[, context]).toggleClass(name)`
 
-### length
-
-Will always be set, even when there is only one matched element
+Adds/removes class on the matched elements depending on whether or not it's already present
 
 ## Browser support
 
-Unlike jQuery, dombo only compatible with browser that supports `querySelectorAll`. This is most newer browsers, and even IE9 has full support for this. Check compatability list here https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll#Browser_compatibility
+Unlike jQuery, dombo is not aiming for legacy browser support.
+
+This means that it's only compatible with browsers that supports `querySelectorAll`. This is most newer browsers, and even IE9 has full support for this. Check compatability list here https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll#Browser_compatibility
 
 ## License
 
