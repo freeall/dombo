@@ -25,15 +25,17 @@ $('.item').on('click', '.delete', function() {
 $('.delete').trigger('click')
 ```
 
-## Methods
+## Selector
 
 ### `$(selector[, context])`
 
-Returns an array with the matched elements, with the following methods added to it.
+Returns an array with the matched elements, with the methods in this doc added to it. Returns an empty array if there are no matched elements.
 
 If a `context` is given, the selector is only checked in the descendant nodes of that context.
 
 If the selector is already a previous returned value from dombo, then it is simply returned. This makes sure that `$('.foo') === $($('.foo'))`.
+
+## Methods
 
 If the selector is `document` or `window` it is also just returned, so you can do `$(document)` and `$(window)`.
 

@@ -176,7 +176,7 @@ var testAddClass = function() {
 var testRemoveClass = function() {
   equals(2, $('.bar').length)
   $('.bar').removeClass('bar')
-  equals(null, $('.bar'))
+  equals(0, $('.bar').length)
 }
 var testRemoveListenerBeforeCall = function() {
   setup('testRemoveListenerBeforeCall')

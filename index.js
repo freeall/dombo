@@ -11,8 +11,7 @@ module.exports = function(selector, context) {
     nodes = context.querySelectorAll(selector)
   }
 
-  if (nodes.length === 0) return null
-
+  nodes = nodes || []
   nodes = Array.prototype.slice.call(nodes);
 
   /*
