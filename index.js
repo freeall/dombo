@@ -128,7 +128,9 @@ module.exports = function(selector, context) {
       node.className = node.className.split(name).join(' ')
     })
   }
-  nodes.toggleClass = function(name) {
+  nodes.toggleClass = function(name, state) {
+    if (state === true) return nodes.addClass(name)
+    if (state === false) return nodes.removeClass(name)
     if (nodes.hasClass(name)) return nodes.removeClass(name)
     return nodes.addClass(name)
   }

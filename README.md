@@ -67,9 +67,11 @@ Adds class to all matched elements
 
 Removes class from all matched elements
 
-### `$(selector[, context]).toggleClass(name)`
+### `$(selector[, context]).toggleClass(name[, state])`
 
-Adds/removes class on the matched elements depending on whether or not it's already present
+Adds/removes class on the matched elements depending on whether or not it's already present.
+
+`State` is a boolean, and if it's set, adds/removes classes accordingly.
 
 ## Browser support
 

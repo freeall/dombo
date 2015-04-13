@@ -237,6 +237,20 @@ var testContext = function() {
 var testElementAsSelector = function() {
   $($('body')[0])
 }
+var testToogleState = function() {
+  setup('testToogleState')
+
+  $('.testToogleState').addClass('foobar')
+  equals(true, $('.testToogleState').hasClass('foobar'))
+  $('.testToogleState').toggleClass('foobar')
+  equals(false, $('.testToogleState').hasClass('foobar'))
+  $('.testToogleState').toggleClass('foobar')
+  equals(true, $('.testToogleState').hasClass('foobar'))
+  $('.testToogleState').toggleClass('foobar', true)
+  equals(true, $('.testToogleState').hasClass('foobar'))
+
+  teardown('testToogleState')
+}
 
 testThreeElements()
 testSingleElement()
@@ -258,3 +272,4 @@ testDocumentClick()
 testWindow()
 testContext()
 testElementAsSelector()
+testToogleState()
