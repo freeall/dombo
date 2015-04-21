@@ -1,10 +1,14 @@
 # dombo
 
-A very limited subset of the jQuery methods.
+Dombo is a simplified version of jQuery.
 
-Only includes event handlers (`on`, `off`, `one`, `trigger`) and className manipulation (`hasClass`, `addClass`, `removeClass`, `toggleClass`)
+A lot less responsibility, a little more low-level, and no legacy browser support (works in most browsers, and IE9+). In the minified version it's 3kb, compared to jQuery's 96kb.
 
-The selector returns a normal array so you can use `forEach`, `map`, `filter`, etc.
+* Selectors. Should work as jQuery, `$('.foo')` or `$('.somelement', '#inanother')`
+* Event handlers. Include these methods: `on`, `off`, `one`
+* ClassName manipulation. Includes these methods: `hasClass`, `addClass`, `removeClass`, `toggleClass`
+
+The selector returns a standard javascript array so you can use `forEach`, `map`, `filter`, etc.
 
 ```
 npm install dombo
