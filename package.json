@@ -2,13 +2,15 @@
   "name": "dombo",
   "version": "3.2.0",
   "description": "A limited subset of jQuery. Has event handlers (on, off, one, trigger) and className manipulation (hasClass, addClass, removeClass, toggleClass)",
-  "dependencies": {},
   "devDependencies": {
     "browserify": "^9.0.7",
+    "uglifyjs": "^2.4.10",
     "wzrd": "^1.2.1"
   },
   "scripts": {
-    "test": "wzrd test.js"
+    "test": "wzrd test.js",
+    "create-build": "browserify index.js -s $ > builds/dombo.${npm_package_version}.js && browserify index.js -s $ | uglifyjs -c > builds/dombo.${npm_package_version}.min.js",
+    "create-release":  "browserify index.js -s $ > builds/dombo.js && browserify index.js -s $ | uglifyjs -c > builds/dombo.min.js"
   },
   "author": "Tobias Baunbæk <freeall@gmail.com>",
   "license": "MIT",
