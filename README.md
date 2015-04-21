@@ -4,9 +4,9 @@ Dombo is a simplified version of jQuery.
 
 A lot less responsibility, a little more low-level, and no legacy browser support (works in most browsers, and IE9+). In the minified version it's 3kb, compared to jQuery's 96kb.
 
-* Selectors. Should work as jQuery, `$('.foo')` or `$('.somelement', '#inanother')`
-* Event handlers. Include these methods: `on`, `off`, `one`
-* ClassName manipulation. Includes these methods: `hasClass`, `addClass`, `removeClass`, `toggleClass`
+* Selectors. Should work as [jQuery's selector](https://api.jquery.com/jQuery/), `$('.foo')` or `$('.somelement', '#inanother')`
+* Event handlers. [`on`](http://api.jquery.com/on/), [`off`](http://api.jquery.com/off/), [`one`](http://api.jquery.com/one/)
+* ClassName manipulation. [`hasClass`](http://api.jquery.com/hasClass/), [`addClass`](http://api.jquery.com/addClass/), [`removeClass`](http://api.jquery.com/removeClass/), [`toggleClass`](http://api.jquery.com/toggleClass/)
 
 The selector returns a standard javascript array so you can use `forEach`, `map`, `filter`, etc.
 
