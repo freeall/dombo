@@ -129,10 +129,13 @@ module.exports = function(selector, context) {
     })
   }
   nodes.toggleClass = function(name, state) {
-    if (state === true) return nodes.addClass(name)
-    if (state === false) return nodes.removeClass(name)
-    if (nodes.hasClass(name)) return nodes.removeClass(name)
-    return nodes.addClass(name)
+    return nodes.forEach(function (node) {
+      node = module.exports(node)
+      if (state === true) return node.addClass(name)
+      if (state === false) return node.removeClass(name)
+      if (node.hasClass(name)) return node.removeClass(name)
+      return node.addClass(name)
+    })
   }
   nodes._dombo = true
 

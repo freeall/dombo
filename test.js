@@ -251,6 +251,16 @@ var testToogleState = function() {
 
   teardown('testToogleState')
 }
+var testToggleStateSwitch = function() {
+  setup('testToggleState elem1 toggleThis')
+  setup('testToggleState elem2')
+
+  equals(true, $('.toggleThis').hasClass('elem1'))
+  equals(1, $('.toggleThis').length)
+  $('.testToggleState').toggleClass('toggleThis')
+  equals(true, $('.toggleThis').hasClass('elem2'))
+  equals(1, $('.toggleThis').length)
+}
 
 testThreeElements()
 testSingleElement()
@@ -273,3 +283,4 @@ testWindow()
 testContext()
 testElementAsSelector()
 testToogleState()
+testToggleStateSwitch()
