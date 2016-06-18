@@ -4,16 +4,29 @@ var equals = function(expected, actual) {
   if (expected !== actual) throw new Error(expected + ' != ' + actual)
 }
 
-var setup = function(name) {
-  var div = document.createElement('div')
-  div.className = name
-  document.body.appendChild(div)
-  return div
+var setup = function(name, type) {
+  type = type || 'div'
+  var elem = document.createElement(type)
+  elem.className = name
+  document.body.appendChild(elem)
+  return elem
 }
 var teardown = function(name) {
-  $('.'+name).forEach(function(node) {
-    node.remove()
-  })
+  $('.' + name).remove();
+}
+var benchmark = function (count, type) {
+  type = type || 'div'
+
+  for (var i = 0; i < count; i++) {
+    setup('benchmark', type)
+  }
+
+  var before = Date.now()
+  var elements = $('.benchmark')
+  var after = Date.now()
+  console.log('Selection with', count, type, 'elements takes', after - before, 'ms')
+
+  elements.remove();
 }
 
 var testThreeElements = function() {
@@ -260,6 +273,55 @@ var testToggleStateSwitch = function() {
   $('.testToggleState').toggleClass('toggleThis')
   equals(true, $('.toggleThis').hasClass('elem2'))
   equals(1, $('.toggleThis').length)
+
+  teardown('testToggleState')
+}
+var testUpdateValue = function () {
+  setup('testUpdateValue', 'input')
+  $('.testUpdateValue').value = 'foobar'
+  equals('foobar', $('.testUpdateValue').value)
+  teardown('testUpdateValue')
+}
+var testReadMultipleValues = function () {
+  setup('testReadMultipleValues', 'input')
+  setup('testReadMultipleValues', 'input')
+  $('.testReadMultipleValues').value = 'foobar'
+
+  // $('.testReadMultipleValues') === ['foobar', 'foobar']
+  $('.testReadMultipleValues').forEach(function (nativeElement) {
+    equals('foobar', nativeElement.value)
+  })
+
+  teardown('testReadMultipleValues')
+}
+var testRemoveMultipleElements = function () {
+  setup('testRemoveMultipleElements')
+  setup('testRemoveMultipleElements')
+  setup('testRemoveMultipleElements')
+  equals(3, $('.testRemoveMultipleElements').length)
+
+  $('.testRemoveMultipleElements').remove()
+  equals(0, $('.testRemoveMultipleElements').length)
+}
+var testCallUnknownMethodThrows = function () {
+  var thrown = false
+  try {
+    $('.no_element').remove()
+  }
+  catch (e) {
+    thrown = true
+  }
+  equals(true, thrown)
+}
+var testGetIndex = function () {
+  setup('testGetIndex')
+  setup('testGetIndex')
+
+  $('.testGetIndex')[0].innerHTML = 'foobar'
+  equals('foobar', $('.testGetIndex')[0].innerHTML)
+  equals('', $('.testGetIndex')[1].innerHTML)
+
+  teardown('testGetIndex')
 }
 
 testThreeElements()
@@ -284,3 +346,22 @@ testContext()
 testElementAsSelector()
 testToogleState()
 testToggleStateSwitch()
+testUpdateValue()
+testReadMultipleValues()
+testRemoveMultipleElements()
+testCallUnknownMethodThrows()
+testGetIndex()
+
+console.log('All tests ran perfectly')
+console.log('Now running some benchmarks')
+
+benchmark(1000, 'div')
+benchmark(10000, 'div')
+benchmark(100000, 'div')
+benchmark(1000, 'span')
+benchmark(10000, 'span')
+benchmark(100000, 'span')
+benchmark(1000, 'input')
+benchmark(10000, 'input')
+
+console.log('Test suite completed')

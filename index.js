@@ -1,3 +1,12 @@
+var ARRAY_PROPERTIES = [
+  'concat', 'copyWithin', 'entries', 'every', 'fill', 'filter',
+  'find', 'findIndex', 'forEach', 'includes', 'indexOf', 'join',
+  'keys', 'lastIndexOf', 'length', 'map', 'pop', 'push', 'reduce',
+  'reduceRight', 'reverse', 'shift', 'slice', 'some', 'sort',
+  'splice', 'toLocaleString', 'toSource', 'toString', 'unshift',
+  'values', 'iterator'
+]
+
 module.exports = function(selector, context) {
   context = context || document
 
@@ -13,6 +22,8 @@ module.exports = function(selector, context) {
 
   nodes = nodes || []
   nodes = Array.prototype.slice.call(nodes);
+
+  var domboObj = new createDomboObject(nodes)
 
   /*
     To handle event listeners, dombo attached its own even listener to the node.
@@ -73,16 +84,16 @@ module.exports = function(selector, context) {
       node.addEventListener(event, fInternal, false)
     })
   }
-  nodes.on = function(event, filter, fn) {
-    if (!fn) return nodes.on(event, null, filter)
+  domboObj.on = function(event, filter, fn) {
+    if (!fn) return domboObj.on(event, null, filter)
     return on(event, filter, fn)
   }
-  nodes.one = function(event, filter, fn) {
-    if (!fn) return nodes.one(event, null, filter)
+  domboObj.one = function(event, filter, fn) {
+    if (!fn) return domboObj.one(event, null, filter)
     return on(event, filter, fn, 1)
   }
-  nodes.off = function(event, fn) {
-    return nodes.forEach(function(node) {
+  domboObj.off = function(event, fn) {
+    return domboObj.forEach(function(node) {
       if (!node._domboListeners) return
       if (!node._domboListeners[event]) return
 
@@ -93,8 +104,8 @@ module.exports = function(selector, context) {
       })
     })
   }
-  nodes.trigger = function(name, data) {
-    return nodes.forEach(function(node) {
+  domboObj.trigger = function(name, data) {
+    return domboObj.forEach(function(node) {
       // From http://stackoverflow.com/questions/2490825/how-to-trigger-event-in-javascript
       if (document.createEvent) {
         var evt = document.createEvent('HTMLEvents')
@@ -109,27 +120,27 @@ module.exports = function(selector, context) {
       }
     })
   }
-  nodes.hasClass = function(name) {
+  domboObj.hasClass = function(name) {
     var res = false
-    nodes.forEach(function(node) {
+    domboObj.forEach(function(node) {
       if (node.className.indexOf(name) > -1) res = true
     })
     return res
   }
-  nodes.addClass = function(name) {
-    return nodes.forEach(function(node) {
+  domboObj.addClass = function(name) {
+    return domboObj.forEach(function(node) {
       if (node.className.indexOf(name) > -1) return
       node.className += ' ' + name
     })
   }
-  nodes.removeClass = function(name) {
-    return nodes.forEach(function(node) {
+  domboObj.removeClass = function(name) {
+    return domboObj.forEach(function(node) {
       if (node.className.indexOf(name) === -1) return
       node.className = node.className.split(name).join(' ')
     })
   }
-  nodes.toggleClass = function(name, state) {
-    return nodes.forEach(function (node) {
+  domboObj.toggleClass = function(name, state) {
+    return domboObj.forEach(function (node) {
       node = module.exports(node)
       if (state === true) return node.addClass(name)
       if (state === false) return node.removeClass(name)
@@ -137,7 +148,74 @@ module.exports = function(selector, context) {
       return node.addClass(name)
     })
   }
-  nodes._dombo = true
 
-  return nodes
+  return domboObj
+}
+
+/*
+  The next three functions are the core functionality of Dombo.
+*/
+function createDomboObject (nodes) {
+  var that = this
+  var typesChecked = {}
+
+  nodes.forEach(function (node, i) {
+    if (typesChecked[node.tagName]) return;
+    typesChecked[node.tagName] = 1;
+
+    for (var name in node) {
+      if (that[name]) return
+
+      var isFunction = typeof node[name] === 'function'
+
+      if (isFunction) {
+        Object.defineProperty(that, name, functionPattern(name, nodes))
+      } else {
+        Object.defineProperty(that, name, propertyPattern(name, nodes))
+      }
+    }
+  })
+
+  // Make the object be array-like
+  nodes.forEach(function (node, i) {
+    that[i] = node
+  })
+  ARRAY_PROPERTIES.forEach(function (propertyName) {
+    that[propertyName] = nodes[propertyName]
+  })
+  this._dombo = true
+}
+
+function propertyPattern (name, nodes) {
+  return {
+    get: function () {
+      var res = []
+      nodes.forEach(function (node) {
+        res.push(node[name])
+      })
+      if (res.length === 1) return res[0]
+      return res
+    },
+    set: function (val) {
+      nodes.forEach(function (node) {
+        node[name] = val
+      })
+    }
+  }
+}
+function functionPattern (name, nodes) {
+  return {
+    get: function () {
+      return function () {
+        var res = []
+        var args = arguments
+        nodes.forEach(function (node) {
+          res.push(node[name].apply(node, args))
+        })
+
+        if (res.length === 1) return res[0]
+        return res
+      }
+    }
+  }
 }
