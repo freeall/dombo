@@ -1,21 +1,38 @@
 var test = require('./test-suite.js')
 
-var testHasClass = function() {
+testSingleOn()
+testMultipleOn()
+testOnFilter1()
+testOnFilter2()
+testOne()
+testOff()
+testOneFilter1()
+testOneFilter2()
+testRemoveListenerBeforeCall()
+testRemoveOneListenerBeforeCall()
+testDocumentClick()
+
+console.log('events tests completed succesfully')
+
+function testHasClass () {
   test.equals(true, $('.foo').hasClass('bar'))
   test.equals(true, $('.foo').hasClass('baz'))
   test.equals(false, $('.foo').hasClass('helloworld'))
 }
-var testAddClass = function() {
+
+function testAddClass () {
   test.equals(1, $('.bleh').length)
   $('.foo').addClass('bleh')
   test.equals(2, $('.bleh').length)
 }
-var testRemoveClass = function() {
+
+function testRemoveClass () {
   test.equals(2, $('.bar').length)
   $('.bar').removeClass('bar')
   test.equals(0, $('.bar').length)
 }
-var testToogleState = function() {
+
+function testToogleState () {
   test.setup('testToogleState')
 
   $('.testToogleState').addClass('foobar')
@@ -29,7 +46,8 @@ var testToogleState = function() {
 
   test.teardown('testToogleState')
 }
-var testToggleStateSwitch = function() {
+
+function testToggleStateSwitch () {
   test.setup('testToggleState elem1 toggleThis')
   test.setup('testToggleState elem2')
 
@@ -41,11 +59,12 @@ var testToggleStateSwitch = function() {
 
   test.teardown('testToggleState')
 }
-var testSingleOn = function() {
+
+function testSingleOn () {
   test.setup('testSingleOn')
 
   var clicked = false
-  $('.testSingleOn').on('click', function() {
+  $('.testSingleOn').on('click', function () {
     clicked = true
   })
   $('.testSingleOn').trigger('click')
@@ -53,16 +72,17 @@ var testSingleOn = function() {
 
   test.teardown('testSingleOn')
 }
-var testMultipleOn = function() {
+
+function testMultipleOn () {
   test.setup('testMultipleOn')
   test.setup('testMultipleOn')
 
   var clicks = 0
   var prevNode
-  $('.testMultipleOn').on('click', function() {
+  $('.testMultipleOn').on('click', function () {
     clicks++
   })
-  $('.testMultipleOn').forEach(function(node) {
+  $('.testMultipleOn').forEach(function (node) {
     if (prevNode) test.equals(true, node !== prevNode)
     prevNode = node
     node.click()
@@ -71,9 +91,10 @@ var testMultipleOn = function() {
 
   test.teardown('testMultipleOn')
 }
-var testOnFilter1 = function() {
+
+function testOnFilter1 () {
   var state = 0
-  var fInner = function() {
+  var fInner = function () {
     if (this.className === 'testOnFilterInner tofi2') {
       test.equals(2, state++)
     }
@@ -81,10 +102,10 @@ var testOnFilter1 = function() {
       test.equals(3, state++)
     }
   }
-  var ftofi1 = function() {
+  var ftofi1 = function () {
     test.equals(1, state++)
   }
-  var ftofi2 = function() {
+  var ftofi2 = function () {
     test.equals(0, state++)
   }
   $('.testOnFilter').on('click', '.testOnFilterInner', fInner)
@@ -96,15 +117,16 @@ var testOnFilter1 = function() {
   $('.testOnFilterInner.tofi1').off('click', ftofi1)
   $('.testOnFilterInner.tofi2').off('click', ftofi2)
 }
-var testOnFilter2 = function() {
+
+function testOnFilter2 () {
   var state = 0
-  var fInner = function() {
+  var fInner = function () {
     test.equals(1, state++)
   }
-  var f1 = function() {
+  var f1 = function () {
     test.equals(0, state++)
   }
-  var f2 = function() {
+  var f2 = function () {
     throw new Error('Should not call this')
   }
 
@@ -117,11 +139,12 @@ var testOnFilter2 = function() {
   $('.testOnFilterInner.tofi1').off('click', f1)
   $('.testOnFilterInner.tofi2').off('click', f2)
 }
-var testOne = function() {
+
+function testOne () {
   test.setup('testOne')
 
   var clicks = 0
-  $('.testOne').one('click', function() {
+  $('.testOne').one('click', function () {
     clicks++
   })
   $('.testOne').trigger('click')
@@ -131,11 +154,12 @@ var testOne = function() {
 
   test.teardown('testOne')
 }
-var testOff = function() {
+
+function testOff () {
   test.setup('testOff')
 
   var clicks = 0
-  var onclick = function() {
+  var onclick = function () {
     clicks++
   }
   $('.testOff').on('click', onclick)
@@ -146,9 +170,10 @@ var testOff = function() {
 
   test.teardown('testOff')
 }
-var testOneFilter1 = function() {
+
+function testOneFilter1 () {
   var clicks = 0
-  var f = function() {
+  var f = function () {
     clicks++
   }
   $('.outerOne').one('click', '.innerOne2', f)
@@ -158,9 +183,10 @@ var testOneFilter1 = function() {
 
   $('.outerOne').off('click', f)
 }
-var testOneFilter2 = function() {
+
+function testOneFilter2 () {
   var clicks = 0
-  var f = function() {
+  var f = function () {
     clicks++
   }
   $('.testOnFilter').one('click', '.testOnFilterInner', f)
@@ -169,11 +195,12 @@ var testOneFilter2 = function() {
 
   $('.testOnFilter').off('click', f)
 }
-var testRemoveListenerBeforeCall = function() {
+
+function testRemoveListenerBeforeCall () {
   test.setup('testRemoveListenerBeforeCall')
 
   var clicks = 0
-  var onclick = function() {
+  var onclick = function () {
     clicks++
   }
   $('.testRemoveListenerBeforeCall').on('click', onclick)
@@ -183,11 +210,12 @@ var testRemoveListenerBeforeCall = function() {
 
   test.teardown('testRemoveListenerBeforeCall')
 }
-var testRemoveOneListenerBeforeCall = function() {
+
+function testRemoveOneListenerBeforeCall () {
   test.setup('testRemoveOneListenerBeforeCall')
 
   var clicks = 0
-  var onclick = function() {
+  var onclick = function () {
     clicks++
   }
   $('.testRemoveOneListenerBeforeCall').one('click', onclick)
@@ -197,30 +225,12 @@ var testRemoveOneListenerBeforeCall = function() {
 
   test.teardown('testRemoveOneListenerBeforeCall')
 }
-var testDocumentClick = function() {
+
+function testDocumentClick () {
   var clicks = 0
-  $(document).on('click', function() {
+  $(document).on('click', function () {
     clicks++
   })
   $('body').trigger('click')
   test.equals(1, clicks)
 }
-
-testHasClass()
-testAddClass()
-testRemoveClass()
-testToogleState()
-testToggleStateSwitch()
-testSingleOn()
-testMultipleOn()
-testOnFilter1()
-testOnFilter2()
-testOne()
-testOff()
-testOneFilter1()
-testOneFilter2()
-testRemoveListenerBeforeCall()
-testRemoveOneListenerBeforeCall()
-testDocumentClick()
-
-console.log('dombo-jquery completed succesfully')

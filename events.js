@@ -1,5 +1,12 @@
+module.exports = {
+  on: on,
+  off: off,
+  one: one,
+  trigger: trigger
+}
+
 /*
-  To handle event listeners, dombo attached its own even listener to the node.
+  To handle event listeners, dombo attaches its own event listener to the node.
   To do this properly dombo adds some data on the node.
 
   Node: {
@@ -12,11 +19,11 @@
     ...
   }
 */
-var on = function(domboObj, event, selector, fOriginal, one) {
+function _on (domboObj, event, selector, fOriginal, one) {
   var called = false
 
-  return domboObj.forEach(function(node) {
-    var fInternal = function(mouseEvent) {
+  return domboObj.forEach(function (node) {
+    var fInternal = function (mouseEvent) {
       if (one && called) return
 
       if (!selector) {
@@ -30,13 +37,13 @@ var on = function(domboObj, event, selector, fOriginal, one) {
       */
       var handlerNode = this
       var possibles = this.querySelectorAll(selector)
-      var isPossible = function(node) {
+      var isPossible = function (node) {
         for (var i=0; i<possibles.length; i++) {
           if (possibles[i] === node) return true
         }
         return false
       }
-      var next = function(node) {
+      var next = function (node) {
         if (node === handlerNode) return
         if (isPossible(node)) {
           called = true
@@ -58,18 +65,18 @@ var on = function(domboObj, event, selector, fOriginal, one) {
   })
 }
 
-$.fn.on = function (event, filter, fn) {
+function on (event, filter, fn) {
   if (!fn) return this.on(event, null, filter)
-  return on(this, event, filter, fn)
+  return _on(this, event, filter, fn)
 }
 
-$.fn.one = function (event, filter, fn) {
+function one (event, filter, fn) {
   if (!fn) return this.one(event, null, filter)
-  return on(this, event, filter, fn, 1)
+  return _on(this, event, filter, fn, 1)
 }
 
-$.fn.off = function (event, fn) {
-  return this.forEach(function(node) {
+function off (event, fn) {
+  return this.forEach(function (node) {
     if (!node._domboListeners) return
     if (!node._domboListeners[event]) return
 
@@ -81,7 +88,7 @@ $.fn.off = function (event, fn) {
   })
 }
 
-$.fn.trigger = function (name, data) {
+function trigger (name, data) {
   return this.forEach(function (node) {
     // From http://stackoverflow.com/questions/2490825/how-to-trigger-event-in-javascript
     if (document.createEvent) {
@@ -95,37 +102,5 @@ $.fn.trigger = function (name, data) {
       evt.eventName = name
       node.fireEvent('on' + evt.eventType, evt)
     }
-  })
-}
-
-$.fn.hasClass = function(name) {
-  var res = false
-  this.forEach(function(node) {
-    if (node.className.indexOf(name) > -1) res = true
-  })
-  return res
-}
-
-$.fn.addClass = function(name) {
-  return this.forEach(function(node) {
-    if (node.className.indexOf(name) > -1) return
-    node.className += ' ' + name
-  })
-}
-
-$.fn.removeClass = function(name) {
-  return this.forEach(function(node) {
-    if (node.className.indexOf(name) === -1) return
-    node.className = node.className.split(name).join(' ')
-  })
-}
-
-$.fn.toggleClass = function(name, state) {
-  return this.forEach(function (node) {
-    node = $(node)
-    if (state === true) return node.addClass(name)
-    if (state === false) return node.removeClass(name)
-    if (node.hasClass(name)) return node.removeClass(name)
-    return node.addClass(name)
   })
 }

@@ -1,6 +1,32 @@
 var test = require('./test-suite')
 
-var testThreeElements = function() {
+testThreeElements()
+testSingleElement()
+testDocument()
+testWindow()
+testContext()
+testElementAsSelector()
+testUpdateValue()
+testReadMultipleValues()
+testRemoveMultipleElements()
+testCallUnknownMethodThrows()
+testGetIndex()
+
+console.log('base functionality tests completed succesfully')
+// console.log('Now running some benchmarks')
+
+// benchmark(1000, 'div')
+// benchmark(10000, 'div')
+// benchmark(100000, 'div')
+// benchmark(1000, 'span')
+// benchmark(10000, 'span')
+// benchmark(100000, 'span')
+// benchmark(1000, 'input')
+// benchmark(10000, 'input')
+
+// console.log('Test suite completed')
+
+function testThreeElements () {
   test.setup('testThreeElements')
   test.setup('testThreeElements')
   test.setup('testThreeElements')
@@ -10,7 +36,8 @@ var testThreeElements = function() {
 
   test.teardown('testThreeElements')
 }
-var testSingleElement = function() {
+
+function testSingleElement () {
   test.setup('testSingleElement')
 
   var elm = $('.testSingleElement')
@@ -19,13 +46,16 @@ var testSingleElement = function() {
 
   test.teardown('testSingleElement')
 }
-var testDocument = function() {
+
+function testDocument () {
   test.equals(document, $(document)[0])
 }
-var testWindow = function() {
+
+function testWindow () {
   $(window) // will fail if it doesn't work
 }
-var testContext = function() {
+
+function testContext () {
   test.setup('testContext')
   var outer = test.setup('testContextOuter')
   var div = document.createElement('div')
@@ -39,16 +69,19 @@ var testContext = function() {
   test.teardown('testContext')
   test.teardown('testContextOuter')
 }
-var testElementAsSelector = function() {
+
+function testElementAsSelector () {
   $($('body')[0])
 }
-var testUpdateValue = function () {
+
+function testUpdateValue  () {
   test.setup('testUpdateValue', 'input')
   $('.testUpdateValue').value = 'foobar'
   test.equals('foobar', $('.testUpdateValue').value)
   test.teardown('testUpdateValue')
 }
-var testReadMultipleValues = function () {
+
+function testReadMultipleValues  () {
   test.setup('testReadMultipleValues', 'input')
   test.setup('testReadMultipleValues', 'input')
   $('.testReadMultipleValues').value = 'foobar'
@@ -60,7 +93,8 @@ var testReadMultipleValues = function () {
 
   test.teardown('testReadMultipleValues')
 }
-var testRemoveMultipleElements = function () {
+
+function testRemoveMultipleElements  () {
   test.setup('testRemoveMultipleElements')
   test.setup('testRemoveMultipleElements')
   test.setup('testRemoveMultipleElements')
@@ -69,7 +103,8 @@ var testRemoveMultipleElements = function () {
   $('.testRemoveMultipleElements').remove()
   test.equals(0, $('.testRemoveMultipleElements').length)
 }
-var testCallUnknownMethodThrows = function () {
+
+function testCallUnknownMethodThrows  () {
   var thrown = false
   try {
     $('.no_element').remove()
@@ -79,7 +114,8 @@ var testCallUnknownMethodThrows = function () {
   }
   test.equals(true, thrown)
 }
-var testGetIndex = function () {
+
+function testGetIndex  () {
   test.setup('testGetIndex')
   test.setup('testGetIndex')
 
@@ -89,29 +125,3 @@ var testGetIndex = function () {
 
   test.teardown('testGetIndex')
 }
-
-testThreeElements()
-testSingleElement()
-testDocument()
-testWindow()
-testContext()
-testElementAsSelector()
-testUpdateValue()
-testReadMultipleValues()
-testRemoveMultipleElements()
-testCallUnknownMethodThrows()
-testGetIndex()
-
-console.log('All tests ran perfectly')
-// console.log('Now running some benchmarks')
-
-// benchmark(1000, 'div')
-// benchmark(10000, 'div')
-// benchmark(100000, 'div')
-// benchmark(1000, 'span')
-// benchmark(10000, 'span')
-// benchmark(100000, 'span')
-// benchmark(1000, 'input')
-// benchmark(10000, 'input')
-
-// console.log('Test suite completed')

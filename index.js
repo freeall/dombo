@@ -35,7 +35,7 @@ function createDomboObject (nodes) {
   var that = this
   var typesChecked = {}
 
-  nodes.forEach(function (node, i) {
+  nodes.forEach(function (node) {
     if (typesChecked[node.tagName]) return
     typesChecked[node.tagName] = 1
 
@@ -101,5 +101,16 @@ function functionPattern (name, nodes) {
   }
 }
 
+var plugins = [
+  require('./classes'),
+  require('./events')
+]
+
 dombo.fn = {}
+plugins.forEach(function (modul) {
+  Object.keys(modul).forEach(function (name) {
+    dombo.fn[name] = modul[name]
+  })
+})
+
 module.exports = dombo

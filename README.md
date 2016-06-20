@@ -100,7 +100,7 @@ Adds/removes class on the matched elements depending on whether or not it's alre
 
 ## Tests
 
-To run the test cases run `npm test` and open the browser and go to `http://localhost:9966/test/dombo.html` and `http://localhost:9966/jquery.html`.
+To run the test cases run `npm test` and open the browser and go to `http://localhost:9966/test`
 
 ## Browser support
 

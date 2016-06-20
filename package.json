@@ -8,7 +8,7 @@
     "wzrd": "^1.2.1"
   },
   "scripts": {
-    "test": "wzrd index.js test/dombo-loader.js test/test-suite.js test/dombo.js test/jquery.js",
+    "test": "wzrd test/*.js",
     "create-build": "browserify index.js -s $ > builds/dombo.${npm_package_version}.js && browserify index.js -s $ | uglifyjs -c > builds/dombo.${npm_package_version}.min.js",
     "create-release": "browserify index.js -s $ > builds/dombo.js && browserify index.js -s $ | uglifyjs -c > builds/dombo.min.js"
   },
