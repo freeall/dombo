@@ -1,7 +1,7 @@
 {
   "name": "dombo",
   "version": "4.0.0",
-  "description": "A limited subset of jQuery. Has event handlers (on, off, one, trigger) and className manipulation (hasClass, addClass, removeClass, toggleClass)",
+  "description": "A more low-level and limited jQuery clone. As close to the DOM as possible. Extra features include: on, off, one, trigger, hasClass, addClass, removeClass, toggleClass",
   "devDependencies": {
     "browserify": "^9.0.7",
     "uglifyjs": "^2.4.10",
