@@ -1,0 +1,11 @@
+var test = require('./test-suite')
+
+test.benchmark(1000, 'div')
+test.benchmark(10000, 'div')
+test.benchmark(100000, 'div')
+test.benchmark(1000, 'span')
+test.benchmark(10000, 'span')
+test.benchmark(100000, 'span')
+test.benchmark(1000, 'input')
+test.benchmark(10000, 'input')
+test.benchmark(100000, 'input')
