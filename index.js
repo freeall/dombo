@@ -12,7 +12,7 @@ var dombo = function  (selector, context) {
 
   var nodes
 
-  if (selector._dombo) {
+  if (selector instanceof DomboObject) {
     nodes = selector
   } else if (selector === window || selector === document || selector.nodeName) {
     nodes = [selector]
@@ -23,7 +23,7 @@ var dombo = function  (selector, context) {
   nodes = nodes || []
   nodes = Array.prototype.slice.call(nodes)
 
-  var domboObj = new createDomboObject(nodes)
+  var domboObj = new DomboObject(nodes)
 
   return domboObj
 }
@@ -31,23 +31,24 @@ var dombo = function  (selector, context) {
 /*
   The next three functions are the core functionality of Dombo.
 */
-function createDomboObject (nodes) {
+function DomboObject (nodes) {
   var that = this
-  var typesChecked = {}
 
-  nodes.forEach(function (node) {
-    if (typesChecked[node.tagName]) return
-    typesChecked[node.tagName] = 1
+  this._nodes = nodes
+
+  this._nodes.forEach(function (node) {
+    if (that._typesChecked[node.tagName]) return
+    that._typesChecked[node.tagName] = 1
 
     for (var name in node) {
-      if (that[name]) return
+      if (that[name] !== undefined) return
 
       var isFunction = typeof node[name] === 'function'
 
       if (isFunction) {
-        Object.defineProperty(that, name, functionPattern(name, nodes))
+        Object.defineProperty(DomboObject.prototype, name, functionPattern(name))
       } else {
-        Object.defineProperty(that, name, propertyPattern(name, nodes))
+        Object.defineProperty(DomboObject.prototype, name, propertyPattern(name))
       }
     }
   })
@@ -58,39 +59,40 @@ function createDomboObject (nodes) {
   })
 
   // Make the object be array-like
-  nodes.forEach(function (node, i) {
+  this._nodes.forEach(function (node, i) {
     that[i] = node
   })
   ARRAY_PROPERTIES.forEach(function (propertyName) {
     that[propertyName] = nodes[propertyName]
   })
-  this._dombo = true
 }
+DomboObject.prototype._typesChecked = {}
 
-function propertyPattern (name, nodes) {
+function propertyPattern (name) {
   return {
     get: function () {
       var res = []
-      nodes.forEach(function (node) {
+      this._nodes.forEach(function (node) {
         res.push(node[name])
       })
       if (res.length === 1) return res[0]
       return res
     },
     set: function (val) {
-      nodes.forEach(function (node) {
+      this._nodes.forEach(function (node) {
         node[name] = val
       })
     }
   }
 }
-function functionPattern (name, nodes) {
+function functionPattern (name) {
   return {
     get: function () {
+      var that = this
       return function () {
         var res = []
         var args = arguments
-        nodes.forEach(function (node) {
+        that._nodes.forEach(function (node) {
           res.push(node[name].apply(node, args))
         })
 

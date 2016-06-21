@@ -9,22 +9,9 @@ testElementAsSelector()
 testUpdateValue()
 testReadMultipleValues()
 testRemoveMultipleElements()
-testCallUnknownMethodThrows()
 testGetIndex()
 
 console.log('base functionality tests completed succesfully')
-// console.log('Now running some benchmarks')
-
-// benchmark(1000, 'div')
-// benchmark(10000, 'div')
-// benchmark(100000, 'div')
-// benchmark(1000, 'span')
-// benchmark(10000, 'span')
-// benchmark(100000, 'span')
-// benchmark(1000, 'input')
-// benchmark(10000, 'input')
-
-// console.log('Test suite completed')
 
 function testThreeElements () {
   test.setup('testThreeElements')
@@ -102,17 +89,6 @@ function testRemoveMultipleElements  () {
 
   $('.testRemoveMultipleElements').remove()
   test.equals(0, $('.testRemoveMultipleElements').length)
-}
-
-function testCallUnknownMethodThrows  () {
-  var thrown = false
-  try {
-    $('.no_element').remove()
-  }
-  catch (e) {
-    thrown = true
-  }
-  test.equals(true, thrown)
 }
 
 function testGetIndex  () {
